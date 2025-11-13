@@ -1,8 +1,8 @@
-#import <React/RCTViewManager.h>
-#import "TsMediapipe-Bridging-Header.h"
 #import "React/RCTEventEmitter.h"
+#import "TsMediapipe-Bridging-Header.h"
+#import <React/RCTViewManager.h>
 
-@interface RCT_EXTERN_MODULE(TsMediapipeViewManager, RCTViewManager)
+@interface RCT_EXTERN_MODULE (TsMediapipeViewManager, RCTViewManager)
 
 RCT_EXPORT_VIEW_PROPERTY(width, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(height, NSNumber)
@@ -10,6 +10,9 @@ RCT_EXPORT_VIEW_PROPERTY(height, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(onLandmark, RCTDirectEventBlock)
 
 RCT_EXTERN_METHOD(switchCamera)
+RCT_EXTERN_METHOD(startRecording)
+RCT_EXTERN_METHOD(stopRecording : (RCTPromiseResolveBlock)
+                      resolve rejecter : (RCTPromiseRejectBlock)reject)
 
 RCT_EXPORT_VIEW_PROPERTY(face, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(leftArm, BOOL)
