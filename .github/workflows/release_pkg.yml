@@ -1,10 +1,10 @@
 name: Node.js Package
 
 on:
-    workflow_dispatch:
-    push:
-      branches:
-        - main 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 20.15.1
       - run: npm install
-      - run: npm test   
+      - run: npm test
 
   publish-npm:
     needs: build
@@ -31,7 +31,7 @@ jobs:
         run: |
           # Extract current version
           current_version=$(npm view @raznak/react-native-mediapipe version)
-          
+
           # Split version into components
           major=$(echo $current_version | cut -d. -f1)
           minor=$(echo $current_version | cut -d. -f2)
@@ -45,7 +45,7 @@ jobs:
 
           # Update the version in package.json
           jq --arg new_version "$new_version" '.version = $new_version' package.json > tmp.json && mv tmp.json package.json
-          
+
           # Display the new version for debugging
           echo "New version is $new_version"
       - run: npm install
