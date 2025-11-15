@@ -21,8 +21,8 @@ class TsMediapipeViewManager: RCTViewManager {
   }
 
   @objc func startRecording(
-    _ resolve: RCTPromiseResolveBlock,
-    rejecter reject: RCTPromiseRejectBlock
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
 
     DispatchQueue.main.async {
@@ -41,8 +41,8 @@ class TsMediapipeViewManager: RCTViewManager {
   }
 
   @objc func stopRecording(
-    _ resolve: RCTPromiseResolveBlock,
-    rejecter reject: RCTPromiseRejectBlock
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
 
     DispatchQueue.main.async {

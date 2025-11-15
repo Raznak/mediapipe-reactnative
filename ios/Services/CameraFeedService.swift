@@ -770,7 +770,7 @@ extension CameraFeedService: AVCaptureVideoDataOutputSampleBufferDelegate {
     let heightRatio = isPortrait ? imageSize.height / 1920 : imageSize.width / 1920
     let widthRatio = isPortrait ? imageSize.width / 1080 : imageSize.height / 1080
 
-    var size = 165 * widthRatio
+    let size = 165 * widthRatio
     var attributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.systemFont(ofSize: size),
       .foregroundColor: UIColor.white,
@@ -779,7 +779,7 @@ extension CameraFeedService: AVCaptureVideoDataOutputSampleBufferDelegate {
     //      let texts = [self.eventName, "Timer "+timerString, "",  currentTimestampString, " / " + String(self.startTimestamp)]
 
     // Define padding for the background
-    var padding: CGFloat = 10.0 * widthRatio
+    let padding: CGFloat = 10.0 * widthRatio
 
     // let textSizes = texts.map { NSAttributedString(string: $0, attributes: attributes).size() }
 
@@ -815,7 +815,7 @@ extension CameraFeedService: AVCaptureVideoDataOutputSampleBufferDelegate {
         ]
 
         let attributedString = NSAttributedString(string: text, attributes: attributes)
-        var textSize = attributedString.size()
+        let textSize = attributedString.size()
         //          if index == 0 {
         //            textSize = CGSize(width: textSize.width+21, height: textSize.height+14)
         //          }

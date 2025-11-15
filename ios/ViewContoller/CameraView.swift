@@ -529,7 +529,7 @@ extension CameraView: PoseLandmarkerServiceLiveStreamDelegate {
       //   self!.frameCount =  self!.frameCount+1;
       //   if(self!.frameCount > Int(limit)){
       self!.frameCount = 0
-      var results = poseLandmarkerResult.landmarks.first
+      let results = poseLandmarkerResult.landmarks.first
       var worldLandmarks = poseLandmarkerResult.worldLandmarks.first
 
       var swiftDict: [String: Any] = [:]
