@@ -27,27 +27,27 @@ jobs:
           node-version: 20.15.1
           registry-url: https://registry.npmjs.org/
       # Step 3: Bump version (incrementing the patch)
-      # - name: Bump version
-      #   run: |
-      #     # Extract current version
-      #     current_version=$(npm view @raznak/react-native-mediapipe version)
+      - name: Bump version
+        run: |
+          # Extract current version
+          current_version=$(npm view @raznak/react-native-mediapipe version)
 
-      #     # Split version into components
-      #     major=$(echo $current_version | cut -d. -f1)
-      #     minor=$(echo $current_version | cut -d. -f2)
-      #     patch=$(echo $current_version | cut -d. -f3)
+          # Split version into components
+          major=$(echo $current_version | cut -d. -f1)
+          minor=$(echo $current_version | cut -d. -f2)
+          patch=$(echo $current_version | cut -d. -f3)
 
-      #     # Increment the patch version
-      #     new_patch=$((patch + 1))
+          # Increment the patch version
+          new_patch=$((patch + 1))
 
-      #     # Create new version string
-      #     new_version="$major.$minor.$new_patch"
+          # Create new version string
+          new_version="$major.$minor.$new_patch"
 
-      #     # Update the version in package.json
-      #     jq --arg new_version "$new_version" '.version = $new_version' package.json > tmp.json && mv tmp.json package.json
+          # Update the version in package.json
+          jq --arg new_version "$new_version" '.version = $new_version' package.json > tmp.json && mv tmp.json package.json
 
-      #     # Display the new version for debugging
-      #     echo "New version is $new_version"
+          # Display the new version for debugging
+          echo "New version is $new_version"
       - run: npm install
       - run: npm publish
         env:

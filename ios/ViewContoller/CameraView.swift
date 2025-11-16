@@ -530,7 +530,7 @@ extension CameraView: PoseLandmarkerServiceLiveStreamDelegate {
       //   if(self!.frameCount > Int(limit)){
       self!.frameCount = 0
       let results = poseLandmarkerResult.landmarks.first
-      var worldLandmarks = poseLandmarkerResult.worldLandmarks.first
+      let worldLandmarks = poseLandmarkerResult.worldLandmarks.first
 
       var swiftDict: [String: Any] = [:]
 
@@ -596,8 +596,7 @@ extension CameraView: PoseLandmarkerServiceLiveStreamDelegate {
       //  }
 
       if self!.previewView != nil {
-        let orientaiton =
-          self!.isPortrait ? UIDevice.current.orientation : UIDeviceOrientation(rawValue: 3)
+        // let orientation = self!.isPortrait ? UIDevice.current.orientation : UIDeviceOrientation(rawValue: 3)
         let imageSize = weakSelf.cameraFeedService.videoResolution
         let poseOverlays = OverlayView().poseOverlays(
           fromMultiplePoseLandmarks: poseLandmarkerResult.landmarks,

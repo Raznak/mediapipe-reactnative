@@ -637,7 +637,7 @@ extension CameraFeedService: AVCaptureVideoDataOutputSampleBufferDelegate {
         frameCount = 0
       }
 
-      var currentTimeStamp = Int(Date().timeIntervalSince1970 * 1000)
+      let currentTimeStamp = Int(Date().timeIntervalSince1970 * 1000)
       if let view = delegate as? CameraView {
         view.writeFrame(sampleBuffer)
       }
@@ -779,7 +779,7 @@ extension CameraFeedService: AVCaptureVideoDataOutputSampleBufferDelegate {
     //      let texts = [self.eventName, "Timer "+timerString, "",  currentTimestampString, " / " + String(self.startTimestamp)]
 
     // Define padding for the background
-    let padding: CGFloat = 10.0 * widthRatio
+    // let padding: CGFloat = 10.0 * widthRatio
 
     // let textSizes = texts.map { NSAttributedString(string: $0, attributes: attributes).size() }
 
