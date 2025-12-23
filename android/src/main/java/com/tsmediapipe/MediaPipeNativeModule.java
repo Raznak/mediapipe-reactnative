@@ -37,4 +37,18 @@ public class MediaPipeNativeModule extends ReactContextBaseJavaModule {
       Log.e("switchCameraMethod", "CameraFragment is not initialized");
     }
   }
+
+  @ReactMethod
+  public void startRecording(String path) {
+    if (cameraFragmentManager == null) return;
+
+    cameraFragmentManager.startRecording(path);
+  }
+
+  @ReactMethod
+  public void stopRecording() {
+    if (cameraFragmentManager == null) return;
+
+    cameraFragmentManager.stopRecording();
+  }
 }

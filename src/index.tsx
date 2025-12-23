@@ -16,7 +16,7 @@ import {
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
 
 const LINKING_ERROR =
-  `The package '@thinksys/react-native-mediapipe' doesn't seem to be linked. Make sure: \n\n` +
+  `The package '@raznak/react-native-mediapipe' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
@@ -53,6 +53,22 @@ const ComponentName = isAndroid ? 'TsMediapipeViewManager' : 'TsMediapipeView';
 const switchCamera = isAndroid
   ? MediaPipeNativeModule.switchCameraMethod
   : TsMediapipeViewManager.switchCamera;
+
+const startRecording = () => {
+  if (Platform.OS === 'android') {
+    return MediaPipeNativeModule.startRecording();
+  } else {
+    return TsMediapipeViewManager.startRecording();
+  }
+};
+
+const stopRecording = () => {
+  if (Platform.OS === 'android') {
+    return MediaPipeNativeModule.stopRecording();
+  } else {
+    return TsMediapipeViewManager.stopRecording();
+  }
+};
 
 const TsMediapipe =
   UIManager.getViewManagerConfig(ComponentName) != null
@@ -148,4 +164,5 @@ const TsMediapipeView: React.FC<MediapipeComponentProps> = (props) => {
   );
 };
 
-export { TsMediapipeView as RNMediapipe, switchCamera };
+export { TsMediapipeView as RNMediapipe, switchCamera, startRecording, stopRecording };
+
