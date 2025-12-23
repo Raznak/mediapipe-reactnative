@@ -50,5 +50,5 @@ jobs:
           echo "New version is $new_version"
       - run: npm install
       - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPMJS_ACCESS_TOKEN}}
+        # env:
+        # NODE_AUTH_TOKEN: ${{secrets.NPMJS_ACCESS_TOKEN}}
