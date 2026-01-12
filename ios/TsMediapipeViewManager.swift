@@ -16,6 +16,12 @@ class TsMediapipeViewManager: RCTViewManager {
     return true
   }
 
+  @objc var overlayConfig: NSDictionary = [:] {
+    didSet {
+      view?.updateOverlayConfig(overlayConfig)
+    }
+  }
+
   @objc func switchCamera() {
     cameraView?.switchCamera()
   }
