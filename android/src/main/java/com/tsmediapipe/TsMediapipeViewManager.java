@@ -14,12 +14,16 @@ import androidx.fragment.app.FragmentManager;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.tsmediapipe.fragment.CameraFragment;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TsMediapipeViewManager extends ViewGroupManager<FrameLayout> {
@@ -275,6 +279,48 @@ public class TsMediapipeViewManager extends ViewGroupManager<FrameLayout> {
   @ReactProp(name = "rightAnkle")
   public void setRightAnkleProp(View view, boolean rightAnkle) {
     GlobalState.isRightAnkleEnabled = rightAnkle;
+  }
+
+  @ReactProp(name = "activeLandmarks")
+  public void setActiveLandmarks(View view, ReadableMap activeLandmarks) {
+    if (activeLandmarks == null) {
+      GlobalState.activeLandmarks = new HashMap<>();
+      return;
+    }
+
+    HashMap<Integer, Integer> parsed = new HashMap<>();
+    ReadableMapKeySetIterator iterator = activeLandmarks.keySetIterator();
+    while (iterator.hasNextKey()) {
+      String key = iterator.nextKey();
+      int index;
+      try {
+        index = Integer.parseInt(key);
+      } catch (NumberFormatException e) {
+        continue;
+      }
+
+      ReadableType type = activeLandmarks.getType(key);
+      try {
+        if (type == ReadableType.String) {
+          String colorString = activeLandmarks.getString(key);
+          if (colorString != null) {
+            parsed.put(index, android.graphics.Color.parseColor(colorString));
+          }
+        } else if (type == ReadableType.Number) {
+          parsed.put(index, activeLandmarks.getInt(key));
+        }
+      } catch (IllegalArgumentException ignored) {
+      }
+    }
+
+    GlobalState.activeLandmarks = parsed;
+  }
+
+  @ReactProp(name = "activeLandmarkRadius")
+  public void setActiveLandmarkRadius(View view, float radius) {
+    if (radius > 0) {
+      GlobalState.activeLandmarkRadius = radius;
+    }
   }
 
   /**

@@ -126,6 +126,20 @@ class CameraView: UIView {
     }
   }
 
+  private var activeLandmarkColors: [Int: UIColor] = [:]
+
+  @objc var activeLandmarks: NSDictionary? {
+    didSet {
+      updateActiveLandmarks()
+    }
+  }
+
+  @objc var activeLandmarkRadius: NSNumber = NSNumber(value: Double(DefaultConstants.highlightPointRadius)) {
+    didSet {
+      overlayView?.activeLandmarkRadius = CGFloat(truncating: activeLandmarkRadius)
+    }
+  }
+
   @objc var frameLimit: NSNumber = DefaultConstants.FRAME_LIMIT
   @objc var orientation: NSNumber = 0 {
     didSet {
@@ -169,6 +183,20 @@ class CameraView: UIView {
       "leftAnkle": leftAnkle,
       "rightAnkle": rightAnkle,
     ]
+  }
+
+  private func updateActiveLandmarks() {
+    var colors: [Int: UIColor] = [:]
+    if let dict = activeLandmarks {
+      for (key, value) in dict {
+        guard let index = Int(String(describing: key)) else { continue }
+        if let color = UIColor.fromHexOrName(String(describing: value)) {
+          colors[index] = color
+        }
+      }
+    }
+    activeLandmarkColors = colors
+    overlayView?.activeLandmarkColors = colors
   }
 
   // MARK: Constraints
@@ -222,6 +250,8 @@ class CameraView: UIView {
     resumeButton = UIButton()
     overlayView = OverlayView()
     overlayView.backgroundColor = UIColor.white.withAlphaComponent(0.0)
+    overlayView.activeLandmarkColors = activeLandmarkColors
+    overlayView.activeLandmarkRadius = CGFloat(truncating: activeLandmarkRadius)
     addSubview(previewView)
     addSubview(cameraUnavailableLabel)
     //    addSubview(resumeButton)
@@ -606,6 +636,8 @@ extension CameraView: PoseLandmarkerServiceLiveStreamDelegate {
           andOrientation: UIImage.Orientation.from(
             deviceOrientation: UIDevice.current.orientation), isPortrait: self!.isPortrait,
           propDictionary: self!.propDictionary!)
+        weakSelf.overlayView.activeLandmarkColors = self?.activeLandmarkColors ?? [:]
+        weakSelf.overlayView.activeLandmarkRadius = CGFloat(truncating: self?.activeLandmarkRadius ?? NSNumber(value: Double(DefaultConstants.highlightPointRadius)))
         weakSelf.overlayView.clear()
         weakSelf.overlayView.draw(
           poseOverlays: poseOverlays,
@@ -633,4 +665,45 @@ extension AVLayerVideoGravity {
     }
   }
 
+}
+
+private extension UIColor {
+  static func fromHexOrName(_ value: String) -> UIColor? {
+    let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    if trimmed.isEmpty { return nil }
+
+    let named: [String: UIColor] = [
+      "red": .red,
+      "green": .green,
+      "blue": .blue,
+      "yellow": .yellow,
+      "white": .white,
+      "black": .black,
+      "cyan": .cyan,
+      "magenta": .magenta,
+      "gray": .gray,
+      "grey": .gray,
+      "lightgray": .lightGray,
+      "darkgray": .darkGray,
+    ]
+    if let color = named[trimmed] {
+      return color
+    }
+
+    var hex = trimmed
+    if hex.hasPrefix("#") {
+      hex.removeFirst()
+    }
+
+    guard hex.count == 6 || hex.count == 8 else { return nil }
+    var intValue: UInt64 = 0
+    guard Scanner(string: hex).scanHexInt64(&intValue) else { return nil }
+
+    let hasAlpha = hex.count == 8
+    let a = hasAlpha ? CGFloat((intValue >> 24) & 0xff) / 255.0 : 1.0
+    let r = CGFloat((intValue >> 16) & 0xff) / 255.0
+    let g = CGFloat((intValue >> 8) & 0xff) / 255.0
+    let b = CGFloat(intValue & 0xff) / 255.0
+    return UIColor(red: r, green: g, blue: b, alpha: a)
+  }
 }

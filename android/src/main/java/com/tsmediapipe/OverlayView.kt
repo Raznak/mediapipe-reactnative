@@ -60,6 +60,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
     val rightWrist = GlobalState.isRightWristEnabled
     val leftAnkle = GlobalState.isLeftAnkleEnabled
     val rightAnkle = GlobalState.isRightAnkleEnabled
+    val activeLandmarks = GlobalState.activeLandmarks
 
     results?.let { poseLandmarkerResult ->
       for (landmark in poseLandmarkerResult.landmarks()) {
@@ -178,6 +179,22 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
               poseLandmarkerResult.landmarks()[0][it.end()].y() * imageHeight * scaleFactor,
               linePaint
             )
+          }
+        }
+
+        if (activeLandmarks.isNotEmpty()) {
+          val landmarks = poseLandmarkerResult.landmarks()[0]
+          for ((index, color) in activeLandmarks) {
+            if (index in landmarks.indices) {
+              val point = landmarks[index]
+              pointPaint.color = color
+              canvas.drawCircle(
+                point.x() * imageWidth * scaleFactor,
+                point.y() * imageHeight * scaleFactor,
+                GlobalState.activeLandmarkRadius,
+                pointPaint
+              )
+            }
           }
         }
       }

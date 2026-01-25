@@ -34,6 +34,8 @@ type TsMediapipeProps = {
   rightLeg?: boolean;
   leftAnkle?: boolean;
   rightAnkle?: boolean;
+  activeLandmarks?: Record<number, string>;
+  activeLandmarkRadius?: number;
   height?: number;
   width?: number;
   poseStarted?: number;
@@ -99,6 +101,8 @@ const TsMediapipeView: React.FC<MediapipeComponentProps> = (props) => {
     rightLeg = true,
     leftAnkle = true,
     rightAnkle = true,
+    activeLandmarks,
+    activeLandmarkRadius,
     frameLimit = 20, // ios only(set the frame rate during initialization)
   } = props;
   const ref = useRef(null);
@@ -157,6 +161,8 @@ const TsMediapipeView: React.FC<MediapipeComponentProps> = (props) => {
         rightLeg={rightLeg}
         leftAnkle={leftAnkle}
         rightAnkle={rightAnkle}
+        activeLandmarks={activeLandmarks}
+        activeLandmarkRadius={activeLandmarkRadius}
         ref={ref}
         frameLimit={frameLimit} // ios only(set the frame rate during initialization)
       />
@@ -165,4 +171,3 @@ const TsMediapipeView: React.FC<MediapipeComponentProps> = (props) => {
 };
 
 export { TsMediapipeView as RNMediapipe, switchCamera, startRecording, stopRecording };
-

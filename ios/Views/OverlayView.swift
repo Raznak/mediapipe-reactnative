@@ -21,6 +21,8 @@ struct PoseOverlay: Codable {
 class OverlayView: UIView {
     
     var poseOverlays: [PoseOverlay] = []
+    var activeLandmarkColors: [Int: UIColor] = [:]
+    var activeLandmarkRadius: CGFloat = DefaultConstants.highlightPointRadius
     
     private var contentImageSize: CGSize = CGSizeZero
     var imageContentMode: UIView.ContentMode = .scaleAspectFit
@@ -75,7 +77,9 @@ class OverlayView: UIView {
     override func draw(_ rect: CGRect) {
         for poseOverlay in poseOverlays {
             drawLines(poseOverlay.lines)
-            //      drawDots(poseOverlay.dots)
+            if !activeLandmarkColors.isEmpty {
+                drawDots(poseOverlay.dots, activeLandmarkColors: activeLandmarkColors)
+            }
         }
     }
     
@@ -134,16 +138,18 @@ class OverlayView: UIView {
             return newRect
         }
     
-    private func drawDots(_ dots: [CGPoint]) {
-        for dot in dots {
+    private func drawDots(_ dots: [CGPoint], activeLandmarkColors: [Int: UIColor]) {
+        for (index, color) in activeLandmarkColors {
+            guard index >= 0 && index < dots.count else { continue }
+            let dot = dots[index]
             let dotRect = CGRect(
-                x: CGFloat(dot.x) - DefaultConstants.pointRadius / 2,
-                y: CGFloat(dot.y) - DefaultConstants.pointRadius / 2,
-                width: DefaultConstants.pointRadius,
-                height: DefaultConstants.pointRadius)
+                x: CGFloat(dot.x) - activeLandmarkRadius / 2,
+                y: CGFloat(dot.y) - activeLandmarkRadius / 2,
+                width: activeLandmarkRadius,
+                height: activeLandmarkRadius)
             let path = UIBezierPath(ovalIn: dotRect)
-            DefaultConstants.pointFillColor.setFill()
-            DefaultConstants.pointColor.setStroke()
+            color.setFill()
+            color.setStroke()
             path.stroke()
             path.fill()
         }
