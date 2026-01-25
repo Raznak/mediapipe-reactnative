@@ -1,5 +1,8 @@
 package com.tsmediapipe;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GlobalState {
   public static boolean isFaceEnabled = false;
   public static boolean isTorsoEnabled = false;
@@ -11,6 +14,9 @@ public class GlobalState {
   public static boolean isRightLegEnabled = false;
   public static boolean isLeftAnkleEnabled = false;
   public static boolean isRightAnkleEnabled = false;
+
+  public static Map<Integer, Integer> activeLandmarks = new HashMap<>();
+  public static float activeLandmarkRadius = 12f;
 
   public static String orientation = "portrait";
 }
