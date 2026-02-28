@@ -1,6 +1,6 @@
 {
   "name": "@raznak/react-native-mediapipe",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "Raznak MediaPipe package for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
